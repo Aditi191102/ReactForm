@@ -9,16 +9,17 @@ function App() {
     country:'',
     streetinfo:'',
     state:'',
-    zipcode:''
+    zipcode:'',
+    gender:'',
+    isChecked:false
   })
 
-  console.log(formDetails);
-
   function changeHandler(event){
+    const {name, value, type, checked,} = event.target
    setFormDetails(oldDate=>{
     return {
       ...oldDate,
-      [event.target.name]: event.target.value
+      [name]: type === "checkbox" ? checked : value 
     }
    })
   }  
@@ -27,10 +28,35 @@ function App() {
     window.alert("please mark on checkbox below if you agree with terms and conditions");
   }
 
+  function submitHandler(event){
+    event.preventDefault();
+    if(formDetails.isChecked===true){
+    console.log("final form data is");
+    console.log(formDetails);
+    setFormDetails({
+    firstName:'',
+    lastName:'',
+    email:'',
+    country:'',
+    streetinfo:'',
+    state:'',
+    zipcode:'',
+    gender:'',
+    isChecked:false
+    });
+    }
+    else{
+      alert("You must agree to the terms and conditions.")
+    }
+  }
+
   return (
     <div className='App'>
       <div className='Form'>
-      <form>
+        <div className='regform'>
+          <h3>Registration Form</h3>
+        </div>
+      <form onSubmit={submitHandler}>
         <label htmlFor='firstName' className='label'>First Name</label>
         <br/>
         
@@ -67,7 +93,7 @@ function App() {
         <input
           className='inputbox'
           type='text'
-          placeholder='Email Id Here'
+          placeholder='Something1@gmail.com'
           name='email'
           id='email'
           value={formDetails.email}
@@ -78,32 +104,34 @@ function App() {
 
         <label className='label'>Gender</label>
         <br/>
-        <br/>
-        <label htmlFor='gender' className='label'>Male</label>
+        <div className='gender'>
+        <label htmlFor='genderMale' className='label'>Male</label>
         <input 
         name='gender'
-        id='gender'
+        id='genderMale'
         type='radio'
-        value='male'></input>
+        value='male'
+        ></input>
 
-        <label htmlFor='femalegender' className='label'>Female</label>
+        <label htmlFor='genderFemale' className='label'>Female</label>
         <input 
         name='gender'
-        id='femalegender'
+        id='genderFemale'
         type='radio'
-        value='female'></input>
-
-        <br/>
+        value='female'
+        ></input>
+        </div>
         <br/>
         <label htmlFor='country' className='label'>Country</label>
         <br/>
 
-        <select
+        <select className='dropdown'
           id='country'
           name='country'
           value={formDetails.country}
           onChange={changeHandler}
         >
+          <option value="choose">Choose</option>
           <option value="India">India</option>
           <option value="USA">USA</option>
           <option value="Russia">Russia</option>
@@ -134,14 +162,14 @@ function App() {
         <br/>
 
         <select 
+        className='dropdown'
         name="state"
         id="state"
         value={formDetails.state}
         onChange={changeHandler}>
 
-          <option 
-            value="Bihar"
-          > Bihar</option>
+          <option value="choose">Choose</option>
+          <option value="Bihar"> Bihar</option>
           <option value="Uttar Pradesh">Uttar Pradesh</option>
           <option value="Haryana">Haryana</option>
           <option value="Jharkhand">Jharkhand</option>
@@ -160,6 +188,7 @@ function App() {
         placeholder='302028'
         name='zipcode'
         id='zipcode'
+        value={formDetails.zipcode}
         onChange={changeHandler}></input>
 
         <br/>
@@ -169,10 +198,26 @@ function App() {
 
         <br/>
         <br/>
-        <label className='label'>I agree </label>
+        
+        <div className='btn'>
+          <div>
+          <label className='label'>I agree </label>
 
-        <input
-        type='checkbox'></input>
+          <input
+          type='checkbox'
+          name='isChecked'
+          id='isChecked'
+          checked={formDetails.isChecked}
+          onChange={changeHandler}
+          ></input>
+
+          </div>
+        
+        <br/>
+        <br/>
+        <button className='submitbtn'>Submit</button>
+        </div>
+        
       </form>
       </div>
     </div>
